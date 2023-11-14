@@ -32,5 +32,11 @@ module.exports = {
       'error',
       { functions: true, classes: true, variables: false }
     ]
-  }
+  },
+  'prettier/prettier': [
+    'error',
+    {
+      endOfLine: 'auto'
+    }
+  ]
 }
