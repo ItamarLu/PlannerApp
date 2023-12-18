@@ -31,12 +31,12 @@ module.exports = {
     'no-use-before-define': [
       'error',
       { functions: true, classes: true, variables: false }
+    ],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto'
+      }
     ]
-  },
-  'prettier/prettier': [
-    'error',
-    {
-      endOfLine: 'auto'
-    }
-  ]
+  }
 }

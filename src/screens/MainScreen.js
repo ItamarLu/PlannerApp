@@ -1,33 +1,53 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView
+} from 'react-native'
+import PostComp from '../components/PostComp'
+import { AntDesign } from '@expo/vector-icons'
 
 const MainScreen = () => {
-  const { container, header, content, navBar, post, titleWrapper, postWrapper } = styles
+  const { container, header, content, navBar, addPostButton, scrollContent } =
+    styles
+
+  const [posts, setPosts] = useState([])
+
+  const generateUniqueId = () => {
+    const timestamp = new Date().getTime().toString(36)
+    const randomString = Math.random().toString(36)
+    return `${timestamp}${randomString}`
+  }
+
+  const addPost = () => {
+    const postId = generateUniqueId()
+    const newPost = <PostComp key={postId} />
+    setPosts([...posts, newPost])
+  }
+
   return (
     <View style={container}>
-
       <View style={header}>
-        <Text>HEADER</Text>        
+        <TouchableOpacity style={addPostButton} onPress={addPost}>
+          <AntDesign name="pluscircleo" size={40} color="black" />
+        </TouchableOpacity>
       </View>
 
       <View style={content}>
-        <View style={post}>
-          <View style={titleWrapper}>
-            <Text>TITLE</Text>
+        <ScrollView>
+          <View style={scrollContent}>
+            {posts.map((post) => (
+              <React.Fragment key={post.id}>{post}</React.Fragment>
+            ))}
           </View>
-          <View style={postWrapper}>
-            <Text>1</Text>
-            <Text>2</Text>
-            <Text>3</Text>
-            <Text>4</Text>
-          </View>
-        </View> 
+        </ScrollView>
       </View>
 
       <View style={navBar}>
-        <Text>NAV BAR</Text>        
+        <Text>NAV BAR</Text>
       </View>
-      
     </View>
   )
 }
@@ -37,38 +57,27 @@ const styles = StyleSheet.create({
     flex: 1
   },
   header: {
-    flex: 2,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-  ,
+    flex: 1.5,
+    justifyContent: 'flex-end',
+    alignItems: 'start',
+    paddingLeft: 20,
+    paddingBottom: 20
+  },
   content: {
     flex: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-
     borderBottomWidth: 1,
     borderTopWidth: 1,
     borderColor: 'gray'
   },
-  post: {
-    width: 300,
-    height: 200,
-
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'gray'
-  },
-  titleWrapper: {
-    height: 35,
+  scrollContent: {
+    padding: 15,
+    gap: 15,
     justifyContent: 'center',
-
-    borderBottomWidth: 1,
-    borderColor: 'gray'
+    alignItems: 'center'
   },
-  postWrapper: {
-  }
-  , 
+  addPostButton: {
+    marginTop: 10
+  },
   navBar: {
     flex: 1,
     justifyContent: 'center',
