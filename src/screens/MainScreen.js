@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView
 } from 'react-native'
-import PostComp from '../components/PostComp'
+import PostComp from '../components/PostComponent'
 import { AntDesign } from '@expo/vector-icons'
 
 const MainScreen = () => {
@@ -17,14 +17,18 @@ const MainScreen = () => {
 
   const generateUniqueId = () => {
     const timestamp = new Date().getTime().toString(36)
-    const randomString = Math.random().toString(36)
-    return `${timestamp}${randomString}`
+    return `${timestamp}`
   }
 
   const addPost = () => {
     const postId = generateUniqueId()
-    const newPost = <PostComp key={postId} />
+    const newPost = { postId }
     setPosts([...posts, newPost])
+  }
+
+  const removePost = (postIdToRemove) => {
+    const updatedPosts = posts.filter((post) => post.postId !== postIdToRemove)
+    setPosts(updatedPosts)
   }
 
   return (
@@ -39,7 +43,9 @@ const MainScreen = () => {
         <ScrollView>
           <View style={scrollContent}>
             {posts.map((post) => (
-              <React.Fragment key={post.id}>{post}</React.Fragment>
+              <React.Fragment key={post.postId}>
+                <PostComp postId={post.postId} onRemove={removePost} />
+              </React.Fragment>
             ))}
           </View>
         </ScrollView>

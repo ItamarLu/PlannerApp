@@ -8,38 +8,31 @@ import {
 } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 
-const PostComp = () => {
-  const {
-    post,
-    titleWrapper,
-    postWrapper,
-    textConfig,
-    addTask,
-    postTitleStyle
-  } = styles
+const PostComp = ({ postId, onRemove }) => {
+  const { post, titleWrapper, postWrapper, postContentStyle, postTitleStyle } =
+    styles
 
   return (
     <View style={post}>
       <View style={titleWrapper}>
         <TextInput
           editable
-          placeholder="TITLE"
+          placeholder="To Do"
           placeholderTextColor="black"
           cursorColor="black"
           style={postTitleStyle}
         />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => onRemove(postId)}>
           <AntDesign name="closecircleo" size={25} color="red" />
         </TouchableOpacity>
       </View>
       <View style={postWrapper}>
-        <Text style={textConfig}>Read</Text>
-        <Text style={textConfig}>Play games</Text>
-        <Text style={textConfig}>Work</Text>
-        <Text style={textConfig}>Study</Text>
-        <TouchableOpacity style={addTask}>
-          <AntDesign name="pluscircleo" size={25} color="black" />
-        </TouchableOpacity>
+        <TextInput
+          editable
+          placeholderTextColor="black"
+          cursorColor="black"
+          style={postContentStyle}
+        />
       </View>
     </View>
   )
@@ -67,11 +60,8 @@ const styles = StyleSheet.create({
   postTitleStyle: {
     fontSize: 25
   },
-  textConfig: {
-    fontSize: 20
-  },
-  addTask: {
-    marginTop: 10
+  postContentStyle: {
+    fontSize: 16
   }
 })
 
