@@ -1,17 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  StatusBar
 } from 'react-native'
 import PostComp from '../components/PostComponent'
 import { AntDesign } from '@expo/vector-icons'
+import { loadPosts, savePosts } from '../utilities/storage'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const MainScreen = () => {
-  const { container, header, content, navBar, addPostButton, scrollContent } =
-    styles
+  const {
+    container,
+    header,
+    headerTitle,
+    content,
+    navBar,
+    scrollContent,
+    navBarText,
+    fillView
+  } = styles
 
   const [posts, setPosts] = useState([])
 
@@ -31,12 +42,28 @@ const MainScreen = () => {
     setPosts(updatedPosts)
   }
 
+  useEffect(() => {
+    const loadPostsFromStorage = async () => {
+      const storedPosts = await loadPosts()
+      setPosts(storedPosts)
+    }
+
+    loadPostsFromStorage()
+  }, [])
+
+  useEffect(() => {
+    savePosts(posts)
+  }, [posts])
+
   return (
-    <View style={container}>
+    <LinearGradient colors={['#0e1c26', '#252F31']} style={container}>
+      <StatusBar backgroundColor="#0e1c26" />
       <View style={header}>
-        <TouchableOpacity style={addPostButton} onPress={addPost}>
-          <AntDesign name="pluscircleo" size={40} color="black" />
+        <TouchableOpacity onPress={addPost}>
+          <AntDesign name="pluscircleo" size={40} color="#B6B6B6" />
         </TouchableOpacity>
+        <Text style={headerTitle}>Planner</Text>
+        <View style={fillView}/>
       </View>
 
       <View style={content}>
@@ -52,9 +79,9 @@ const MainScreen = () => {
       </View>
 
       <View style={navBar}>
-        <Text>NAV BAR</Text>
+        <Text style={navBarText}>-</Text>
       </View>
-    </View>
+    </LinearGradient>
   )
 }
 
@@ -63,17 +90,21 @@ const styles = StyleSheet.create({
     flex: 1
   },
   header: {
-    flex: 1.5,
-    justifyContent: 'flex-end',
-    alignItems: 'start',
-    paddingLeft: 20,
-    paddingBottom: 20
+    flex: 1.2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20
+  },
+  headerTitle: {
+    color: '#B6B6B6',
+    fontSize: 30
   },
   content: {
     flex: 10,
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    borderColor: 'gray'
+    borderColor: '#B6B6B6'
   },
   scrollContent: {
     padding: 15,
@@ -81,13 +112,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  addPostButton: {
-    marginTop: 10
-  },
   navBar: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  navBarText: {
+    color: '#B6B6B6'
+  },
+  fillView: {
+    width: 40
   }
 })
 
