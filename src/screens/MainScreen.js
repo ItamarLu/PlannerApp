@@ -5,7 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  StatusBar
+  StatusBar,
+  Image
 } from 'react-native'
 import PostComp from '../components/PostComponent'
 import { AntDesign } from '@expo/vector-icons'
@@ -20,8 +21,8 @@ const MainScreen = () => {
     content,
     navBar,
     scrollContent,
-    navBarText,
-    fillView
+    fillView,
+    image
   } = styles
 
   const [posts, setPosts] = useState([])
@@ -33,12 +34,27 @@ const MainScreen = () => {
 
   const addPost = () => {
     const postId = generateUniqueId()
-    const newPost = { postId }
+    const newPost = { postId, title: '', task: '' }
     setPosts([...posts, newPost])
   }
 
   const removePost = (postIdToRemove) => {
     const updatedPosts = posts.filter((post) => post.postId !== postIdToRemove)
+    setPosts(updatedPosts)
+  }
+
+  const updatePost = (postId, updatedTitle, updatedTask) => {
+    const updatedPosts = posts.map((post) => {
+      if (post.postId === postId) {
+        return {
+          ...post,
+          title: updatedTitle,
+          task: updatedTask
+        }
+      }
+      return post
+    })
+
     setPosts(updatedPosts)
   }
 
@@ -63,7 +79,7 @@ const MainScreen = () => {
           <AntDesign name="pluscircleo" size={40} color="#B6B6B6" />
         </TouchableOpacity>
         <Text style={headerTitle}>Planner</Text>
-        <View style={fillView}/>
+        <View style={fillView} />
       </View>
 
       <View style={content}>
@@ -71,7 +87,13 @@ const MainScreen = () => {
           <View style={scrollContent}>
             {posts.map((post) => (
               <React.Fragment key={post.postId}>
-                <PostComp postId={post.postId} onRemove={removePost} />
+                <PostComp
+                  postId={post.postId}
+                  titleValue={post.title}
+                  titleTask={post.task}
+                  onRemove={removePost}
+                  onChangeContent={updatePost}
+                />
               </React.Fragment>
             ))}
           </View>
@@ -79,7 +101,11 @@ const MainScreen = () => {
       </View>
 
       <View style={navBar}>
-        <Text style={navBarText}>-</Text>
+        <Image
+          source={require('../../assets/icon.png')}
+          style={image}
+          tintColor={'#B6B6B6'}
+        />
       </View>
     </LinearGradient>
   )
@@ -117,11 +143,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  navBarText: {
-    color: '#B6B6B6'
-  },
   fillView: {
     width: 40
+  },
+  image: {
+    width: 50,
+    height: 50
   }
 })
 

@@ -1,34 +1,53 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 
-const PostComp = ({ postId, onRemove }) => {
+const PostComp = ({
+  postId,
+  titleValue,
+  titleTask,
+  onRemove,
+  onChangeContent
+}) => {
   const { post, titleWrapper, postWrapper, postContentStyle, postTitleStyle } =
     styles
+
+  const [title, setTitle] = useState(titleValue)
+  const [task, setTask] = useState(titleTask)
 
   return (
     <LinearGradient colors={['#0e1c26', '#252F31']} style={post}>
       <View style={titleWrapper}>
         <TextInput
           editable
-          placeholder="To Do"
+          placeholder="Title"
           placeholderTextColor="gray"
           cursorColor="#B6B6B6"
           style={postTitleStyle}
+          value={title}
+          onChangeText={(text) => {
+            setTitle(text)
+            onChangeContent(postId, title, task)
+          }}
         />
         <TouchableOpacity onPress={() => onRemove(postId)}>
-          <AntDesign name="delete" size={25} color="#A50303" />
+          <AntDesign name="delete" size={25} color="#B6B6B6" />
         </TouchableOpacity>
       </View>
       <View style={postWrapper}>
         <TextInput
           editable
           multiline
-          placeholder="Add new task"
+          placeholder="Write task"
           placeholderTextColor="gray"
           cursorColor="#B6B6B6"
           style={postContentStyle}
+          value={task}
+          onChangeText={(text) => {
+            setTask(text)
+            onChangeContent(postId, title, task)
+          }}
         />
       </View>
     </LinearGradient>
