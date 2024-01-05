@@ -16,6 +16,8 @@ const PostComp = ({
   const [title, setTitle] = useState(titleValue)
   const [task, setTask] = useState(titleTask)
 
+  useEffect(() => onChangeContent(postId, title, task), [title, task])
+
   return (
     <LinearGradient colors={['#0e1c26', '#252F31']} style={post}>
       <View style={titleWrapper}>
@@ -26,10 +28,7 @@ const PostComp = ({
           cursorColor="#B6B6B6"
           style={postTitleStyle}
           value={title}
-          onChangeText={(text) => {
-            setTitle(text)
-            onChangeContent(postId, title, task)
-          }}
+          onChangeText={(text) => setTitle(text)}
         />
         <TouchableOpacity onPress={() => onRemove(postId)}>
           <AntDesign name="delete" size={25} color="#B6B6B6" />
@@ -44,10 +43,7 @@ const PostComp = ({
           cursorColor="#B6B6B6"
           style={postContentStyle}
           value={task}
-          onChangeText={(text) => {
-            setTask(text)
-            onChangeContent(postId, title, task)
-          }}
+          onChangeText={(text) => setTask(text)}
         />
       </View>
     </LinearGradient>
