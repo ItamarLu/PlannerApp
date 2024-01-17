@@ -72,13 +72,12 @@ const MainScreen = () => {
   }, [posts])
 
   return (
-    <LinearGradient colors={['#0e1c26', '#252F31']} style={container}>
-      <StatusBar backgroundColor="#0e1c26" />
+    <LinearGradient colors={['#0e1c26', '#13232c']} style={container}>
+      <StatusBar backgroundColor={'#0e1c26'}/>
       <View style={header}>
         <TouchableOpacity onPress={addPost}>
           <AntDesign name="pluscircleo" size={40} color="#B6B6B6" />
         </TouchableOpacity>
-        <Text style={headerTitle}>Planner</Text>
         <View style={fillView} />
       </View>
 
@@ -99,7 +98,6 @@ const MainScreen = () => {
           </View>
         </ScrollView>
       </View>
-
       <View style={navBar}>
         <Image
           source={require('../../assets/icon.png')}

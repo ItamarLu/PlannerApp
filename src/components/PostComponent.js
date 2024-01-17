@@ -19,7 +19,7 @@ const PostComp = ({
   useEffect(() => onChangeContent(postId, title, task), [title, task])
 
   return (
-    <LinearGradient colors={['#0e1c26', '#252F31']} style={post}>
+    <LinearGradient colors={['#13232c', '#13232c']} style={post}>
       <View style={titleWrapper}>
         <TextInput
           editable
